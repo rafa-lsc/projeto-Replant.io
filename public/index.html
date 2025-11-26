@@ -105,6 +105,183 @@
 </section>
 
 
+<!-- SEÇÃO MUDAS DISPONÍVEIS -->
+<section class="bg-[#DDFBD8] py-16">
+  <div class="max-w-6xl mx-auto px-4">
+
+    
+    <div class="flex justify-center mb-4">
+      <span class="inline-block rounded-full bg-[#C7F0C9] px-6 py-2 text-xs font-semibold tracking-wide text-green-800 uppercase">
+        Reconstrua o amanhã
+      </span>
+    </div>
+
+    
+    <h2 class="text-center text-3xl md:text-4xl font-extrabold text-gray-900 mb-3">
+      Confira as nossas <span class="text-[#34A853]">mudas</span> disponíveis!
+    </h2>
+    <p class="text-center text-sm md:text-base text-gray-700">
+      Escolha espécies nativas cultivadas em viveiros certificados:
+    </p>
+
+    
+    <div class="mt-10 flex items-center justify-center gap-6">
+
+      
+      <button
+        id="prevButton"
+        class="hidden md:flex items-center justify-center h-20 w-8 rounded-full border border-[#3B6F2A] bg-white hover:bg-[#3B6F2A]/10 transition shrink-0"
+        aria-label="Anterior"
+      >
+        <img
+          src="/src/icons/Chevron Left.png"
+          alt="Anterior"
+          class="h-6 w-6"
+        />
+      </button>
+
+      
+      <div id="plantsCarousel" class="flex gap-6"></div>
+
+      
+      <button
+        id="nextButton"
+        class="hidden md:flex items-center justify-center h-20 w-8 rounded-full border border-[#3B6F2A] bg-white hover:bg-[#3B6F2A]/10 transition shrink-0"
+        aria-label="Próximo"
+      >
+        <img
+          src="/src/icons/Chevron Right.png"
+          alt="Próximo"
+          class="h-6 w-6"
+        />
+      </button>
+    </div>
+
+    
+    <div class="mt-6 flex justify-center">
+      <img
+        src="/src/icons/Frame 350.png"
+        alt="Indicadores de slides"
+        class="h-3"
+      />
+    </div>
+  </div>
+</section>
+
+
+<script>
+  
+  const CARDS_PER_PAGE = 3;
+  let currentPage = 0;
+
+  // Lista de plantas q por enquanto tá estática. Dps eu integro com a API
+  const plants = [
+    {
+      common_name: "Araucária",
+      scientific_name: "Araucariaceae",
+      description:
+        "Conífera nativa do sul do Brasil, pode atingir grandes alturas e desempenha papel essencial na manutenção da biodiversidade.",
+      image: "/src/img/araucaria.png",
+    },
+    {
+      common_name: "Ipê-Amarelo",
+      scientific_name: "Bignoniaceae",
+      description:
+        "Muito usada em reflorestamento urbano por sua beleza, resistência e adaptação a diferentes climas.",
+      image: "/src/img/ipe.png",
+    },
+    {
+      common_name: "Pau-Brasil",
+      scientific_name: "Fabaceae",
+      description:
+        "Árvore símbolo nacional, famosa por sua madeira avermelhada e pela importância histórica.",
+      image: "/src/img/pau-br.png",
+    },
+    // Plantas extras q podem ser colocadas em outra página do carrossel
+    {
+      common_name: "Jequitibá-rosa",
+      scientific_name: "Cariniana legalis",
+      description:
+        "Uma das maiores árvores da Mata Atlântica, importante para conservação da biodiversidade.",
+      image: "/src/img/araucaria.png", // pode trocar por outra imagem quando tiver
+    },
+    {
+      common_name: "Embaúba",
+      scientific_name: "Cecropia pachystachya",
+      description:
+        "Espécie pioneira muito usada em recuperação de áreas degradadas.",
+      image: "/src/img/ipe.png",
+    },
+    {
+      common_name: "Jatobá",
+      scientific_name: "Hymenaea courbaril",
+      description:
+        "Árvore robusta, com madeira resistente e frutos apreciados pela fauna.",
+      image: "/src/img/pau-br.png",
+    },
+  ];
+
+  const totalPages = Math.ceil(plants.length / CARDS_PER_PAGE);
+
+  
+  function renderCards() {
+    const container = document.getElementById("plantsCarousel");
+    container.innerHTML = "";
+
+    const startIndex = currentPage * CARDS_PER_PAGE;
+    const endIndex = startIndex + CARDS_PER_PAGE;
+
+    const items = plants.slice(startIndex, endIndex);
+
+    items.forEach((plant) => {
+      const article = document.createElement("article");
+      article.className = "w-[311px] h-[432px]";
+
+      article.innerHTML = `
+        <div class="h-full rounded-3xl bg-[#62975E] shadow-lg flex flex-col p-2">
+          <div class="h-[190px] rounded-2xl overflow-hidden">
+            <img src="${plant.image}" alt="${plant.common_name}"
+              class="w-full h-full object-cover" />
+          </div>
+          <div class="flex-1 mt-3 px-3 py-2 text-white flex flex-col text-center">
+            <h3 class="text-lg font-semibold mb-1">${plant.common_name}</h3>
+            <p class="text-xs uppercase tracking-wide mb-3">
+              ${plant.scientific_name}
+            </p>
+            <p class="text-sm leading-relaxed">
+              ${plant.description}
+            </p>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(article);
+    });
+  }
+
+  function showPrev() {
+    currentPage = (currentPage - 1 + totalPages) % totalPages;
+    renderCards();
+  }
+
+  function showNext() {
+    currentPage = (currentPage + 1) % totalPages;
+    renderCards();
+  }
+
+  
+  document.getElementById("prevButton")
+    .addEventListener("click", showPrev);
+
+  document.getElementById("nextButton")
+    .addEventListener("click", showNext);
+
+ 
+  renderCards();
+</script>
+
+
+
 
 </body>
 </html>
